@@ -216,9 +216,6 @@ jupyter notebook
 5. **Clinical Recommendations:** Data-driven protocols for improving outcomes
 
 ### **Projected Impact:**
-- **15-20% reduction** in preventable ICU deaths through early intervention
-- **₹2-3 crore** annual savings per hospital through optimized resource allocation
-- **Improved care quality** through data-driven clinical decision support
 
 ---
 
@@ -233,8 +230,8 @@ jupyter notebook
 
 ## 👤 Author
 
-**[Your Name]**  
-Aspiring Data Analyst | Python | SQL | Healthcare Analytics
+**[Saurav Paul]**  
+ Data Analyst | Python | SQL | Healthcare Analytics
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://linkedin.com/in/yourprofile)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-black)](https://github.com/yourusername)
@@ -250,7 +247,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **WiDS (Women in Data Science)** for organizing the datathon
+- **WiDS (Women in Data Science)** for organising the datathon
 - **MIT GOSSIS Initiative** for providing anonymized clinical data
 - **Stanford University** for hosting the competition
 - Healthcare professionals who contributed domain expertise
@@ -264,64 +261,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## **STEP 6: CREATE .gitignore (5 mins)**
-
-### **Action 6.1: Update .gitignore**
-
-GitHub created a basic `.gitignore` for Python. Let's enhance it:
-
-**Edit `.gitignore` and add:**
-```
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Jupyter Notebook
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# Data files (DON'T commit large CSV files)
-*.csv
-*.xlsx
-*.xls
-data/raw/*.csv
-data/processed/*.csv
-
-# EXCEPT: Keep data dictionary
-!data/raw/data_dictionary.csv
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Outputs (optional - you might want to commit visualizations)
-# outputs/figures/*.png
-# outputs/figures/*.svg

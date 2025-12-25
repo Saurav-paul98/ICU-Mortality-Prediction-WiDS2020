@@ -8,10 +8,9 @@
 
 An end-to-end data analysis project predicting ICU patient mortality using the WiDS (Women in Data Science) Datathon 2020 dataset. This project analyzes **130,000+ ICU admissions** from **200+ hospitals** across 6 countries to identify critical factors affecting patient survival and provide actionable clinical insights.
 
-**Competition:** [WiDS Datathon 2020](https://www.kaggle.com/competitions/widsdatathon2020)  
-**Data Source:** MIT's GOSSIS Initiative (Global Open Source Severity of Illness Score)  
+**Data Source:**  [WiDS Datathon 2020](https://www.kaggle.com/competitions/widsdatathon2020) and MIT's GOSSIS Initiative (Global Open Source Severity of Illness Score)  
 **Domain:** Healthcare Analytics - Critical Care Medicine  
-**Timeline:** Dec 23-29, 2025
+**Timeline:** Dec 15, 2025 -Jan 10, 2026
 
 ---
 

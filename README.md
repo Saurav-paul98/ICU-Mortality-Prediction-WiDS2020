@@ -10,7 +10,7 @@ An end-to-end data analysis project predicting ICU patient mortality using the W
 
 **Data Source:**  [WiDS Datathon 2020](https://www.kaggle.com/competitions/widsdatathon2020) and MIT's GOSSIS Initiative (Global Open Source Severity of Illness Score)  
 **Domain:** Healthcare Analytics - Critical Care Medicine  
-**Timeline:** Dec 15, 2025 -Jan 10, 2026
+**Timeline:** Dec 1, 2025 -Jan 10, 2026
 
 ---
 

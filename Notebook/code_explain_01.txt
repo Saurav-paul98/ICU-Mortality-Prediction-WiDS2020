@@ -1,0 +1,156 @@
+cell 20: 
+Here is the line-by-line breakdown:
+
+1. target_counts = df['hospital_death'].value_counts().sort_index()
+This calculates the raw numbers.
+
+df['hospital_death']: Selects the column containing the target variable (0 for survival, 1 for death).
+
+.value_counts(): Counts how many times each unique value appears (e.g., how many 0s and how many 1s).
+
+.sort_index(): Sorts the result by the label (0 then 1) rather than by the count. This ensures your output is always ordered "Survived" first, "Died" second.
+
+2. target_pct = df['hospital_death'].value_counts(normalize=True).sort_index() * 100
+This calculates the percentage.
+
+normalize=True: Instead of giving the raw count (e.g., 80,000), it gives the proportion (e.g., 0.92).
+
+* 100: Multiplies that proportion by 100 to turn it into a readable percentage (e.g., 92.0).
+
+Example Output
+If your dataset had 100 patients where 92 lived and 8 died, the variables would look like this:
+
+target_counts output:
+
+Plaintext
+
+0    92
+1     8
+Name: hospital_death, dtype: int64
+target_pct output:
+
+Plaintext
+
+0    92.0
+1     8.0
+Name: hospital_death, dtype: float64
+Why is this important?
+In ICU mortality prediction, usually far fewer people die (1) than survive (0). If you see that target_pct is something like 92% vs 8%, you have an imbalanced dataset. You will likely need to use techniques like SMOTE or adjust class weights later in your project so your model doesn't just guess "Survived" for everyone.
+
+This code block performs two critical tasks: it mathematically quantifies how lopsided your data is (Class Imbalance) and then visualizes it side-by-side (Raw Numbers vs. Percentages) to confirm the severity.
+
+Here is the breakdown for an analyst:
+
+1. The Math: Calculating the "Imbalance Ratio"
+Python
+
+imbalance_ratio = target_pct[0] / target_pct[1]
+What it does: It divides the percentage of survivors (target_pct[0]) by the percentage of deaths (target_pct[1]).
+
+Why it matters: If the result is 10:1, it means for every 1 person who died, 10 survived.
+
+The Warning: The print statement explicitly flags this as "HIGHLY IMBALANCED." This is a mental note for you: Standard accuracy metrics will be misleading here. (A model could just guess "Survived" every time and still be 90%+ accurate, which is useless).
+
+2. The Setup: Creating "Subplots"
+Python
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+Instead of making two separate figures, this creates a single figure with 1 row and 2 columns.
+
+axes[0] refers to the left chart (Counts).
+
+axes[1] refers to the right chart (Percentages).
+
+3. The Visualization Loops (The "Pro" Touch)
+The code uses a for loop to verify the numbers on top of the bars. This is better than making the viewer guess the value by looking at the y-axis.
+
+Python
+
+for i, v in enumerate(target_counts.values):
+    axes[0].text(i, v + 1000, f'{v:,}', ha='center', ...)
+enumerate: Gives you both the index i (0 for Survived, 1 for Died) and the value v (the count).
+
+axes[0].text(...): Places text at coordinates (x, y).
+
+X position (i): Centers the text over the correct bar.
+
+Y position (v + 1000): Places the text slightly above the top of the bar so it doesn't overlap.
+
+ha='center': Horizontally aligns the text to the center.
+
+4. Saving High-Res Output
+Python
+
+plt.savefig(r'C:\...\01_target_distribution.png', dpi=300, bbox_inches='tight')
+dpi=300: Saves the image at "print quality" resolution (300 dots per inch). Standard screens are usually 72 or 96 DPI.
+
+bbox_inches='tight': Ensures the labels (like the title or axis names) don't get cut off in the saved image file.
+
+🔍 Analytic Takeaway
+This code confirms that you are dealing with a rare event problem.
+
+Left Chart: Shows you have plenty of data for survivors (green), but very little data for deaths (red).
+
+Right Chart: Shows the exact probability baseline.
+
+cell 22:
+This code is performing Feature Grouping (or Metadata Management).
+
+Since you are dealing with a wide dataset (the WiDS 2020 dataset usually has 180+ columns), analyzing them all at once is messy. This script programmatically organizes your columns into logical buckets (Vitals, Labs, Demographics) so you can analyze them in chunks later.
+
+Here is the breakdown of the techniques used, tailored for an intermediate analyst.
+
+1. The Logic: Advanced List Comprehensions
+The most important pattern here is using any() inside a list comprehension to catch column variations.
+
+The Problem: In ICU data, you often have columns like h1_heart_rate_max, d1_heart_rate_min, etc. You don't want to type all those out. The Solution:
+
+Python
+
+vital_features = [col for col in df.columns if any(x in col for x in ['heart_rate', 'bp', ...])]
+for col in df.columns: Iterates through every column name.
+
+['heart_rate', 'bp', ...]: Your list of "keywords" to look for.
+
+any(...): Returns True if at least one keyword from your list is found inside the column name col.
+
+Example: If col is "d1_heart_rate_min", any() sees that "heart_rate" is inside it, so it keeps the column.
+
+2. Conditional Exclusion
+Look at the hospital_features logic:
+
+Python
+
+hospital_features = [col for col in df.columns if 'hospital' in col and 'death' not in col]
+This is a safety filter. It grabs columns like hospital_id or hospital_admit_source, but specifically excludes your target variable hospital_death. This prevents data leakage where you might accidentally include the answer (the target) in your training features.
+
+3. F-String Formatting for Reporting
+The print statements use alignment formatting to create a clean table in your console:
+
+Python
+
+print(f"   {category:.<30} {count:>3} features")
+:<30: Left-align the text and pad it to 30 characters wide.
+
+.: Fill the empty space with dots (creates the "leader lines" like Demographics..................).
+
+:>3: Right-align the number in a space of 3 characters (ensures single and double digits line up vertically).
+
+4. Reproducibility (JSON Export)
+The code ends by saving this dictionary to a JSON file.
+
+Python
+
+with open('../outputs/reports/feature_categories.json', 'w') as f:
+    json.dump(feature_categories, f, indent=2)
+Why do this? Instead of copy-pasting these long lists into every future notebook (e.g., one for EDA, one for Modeling), you run this script once. Then, in your modeling notebook, you simply load the JSON file. This keeps your code DRY (Don't Repeat Yourself).
+
+Summary of What Happens When You Run This
+It scans all 180+ column names.
+
+It buckets them based on your keywords.
+
+It calculates how many were missed (other_features)—this is a sanity check. If "Other" is huge, your keywords might be too specific.
+
+It saves the map to your drive.
+

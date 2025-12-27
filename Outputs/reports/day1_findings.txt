@@ -1,0 +1,36 @@
+
+KEY FINDINGS FROM DAY 1 EXPLORATION:
+
+1. DATASET SCALE
+   • 130,159 ICU patient admissions
+   • 186 clinical features across 6 major categories
+   • Real hospital data from 200+ facilities globally
+
+2. TARGET VARIABLE (hospital_death)
+   • Class Imbalance: 91.2% survived, 8.8% died (10.4:1 ratio)
+   • ⚠️ CRITICAL: Need special handling (SMOTE, class weights, stratified sampling)
+
+3. MISSING DATA CHALLENGES
+   • 140+ features have missing values
+   • 30+ features have >50% missing
+   • Top missing: Weight (97%), GCS verbal (83%), Ethnicity (41%)
+   • Strategy needed: Imputation vs deletion trade-offs
+
+4. DEMOGRAPHIC PATTERNS
+   • Age strongly correlates with mortality (p < 0.001)
+   • Older patients (>75) have 2-3x higher mortality than younger (<40)
+   • Mean age: ~62 years (ICU population skews older)
+
+5. APACHE SCORE VALIDATION
+   • APACHE death probability correlates with actual outcomes
+   • High-risk APACHE group (>50% prob) shows 60-70% actual mortality
+   • Confirms APACHE is reliable severity indicator
+
+6. FEATURE CATEGORIES IDENTIFIED
+   • Demographics: 13 features
+   • APACHE Scores: 15+ features
+   • Vital Signs: 50+ features (heart rate, BP, temp, etc.)
+   • Lab Results: 40+ features (blood chemistry, gases)
+   • Comorbidities: 20+ features (chronic conditions)
+   • GCS Scores: 5+ features (consciousness level)
+   
